@@ -1,0 +1,23 @@
+version: '3'
+services:
+    server:
+        build:
+            context: .
+        volumes:
+            - ./src:/app/
+        command:
+            sh -c "./server.sh"
+        ports:
+            - "8000:8000"
+    client:
+        build:
+            context: .
+        volumes:
+            - ./src:/app/
+        command:
+            sh -c "/wait && ./client.sh"
+        depends_on:
+            - server
+        environment: 
+            - WAIT_HOSTS=server:8000
+
